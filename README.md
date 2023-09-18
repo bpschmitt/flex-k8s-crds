@@ -3,6 +3,8 @@
 
 In this repo, you'll find an example of how to use New Relic Flex to monitor Kubernetes CRDs.
 
+![New Relic](https://p191.p3.n0.cdn.getcloudapp.com/items/12uQ6GJq/092c8ce4-3393-465b-89d0-cfa705c64607.jpg?v=a2a00427366a0bec507c3124c26e9295)
+
 ## Setup
 
 First, add the example CRD to your cluster.
