@@ -1,0 +1,91 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: nri-flex-crd-monitor
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: nri-flex-crd-monitor
+rules:
+- apiGroups: ["example.com"]
+  resources: ["*"]
+  verbs: ["get", "list", "watch"]
+# - apiGroups: ["example.com","chaos-mesh.org"]
+#   resources: ["*"]
+#   verbs: ["get", "list", "watch"]
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: nri-flex-crd-monitor
+subjects:
+- kind: ServiceAccount
+  name: nri-flex-crd-monitor
+  namespace: flex-demo
+roleRef:
+  kind: ClusterRole
+  name: nri-flex-crd-monitor
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: flex-configmap
+data:
+  k8s-crd.yaml: | 
+    ---
+    integrations:
+      - name: nri-flex
+        # interval: 30s
+        config:
+          name: K8sCRDSample
+          # global:
+          #   base_url: https://kubernetes.default.svc.cluster.local
+          apis:
+            # - name: stuff
+            #   commands:
+            #     - run: cat /var/run/secrets/kubernetes.io/serviceaccount/token | awk '{printf "{\"value\":\"%s\"}",$1}'
+            #   jq: '.'
+            #   store_variables:
+            #     value: token
+            #   ignore_output: true
+            - name: demoWidgetCRD
+              event_type: K8sCRDSample
+              commands: 
+                - run: 'curl -s https://kubernetes.default.svc.cluster.local/apis/example.com/v1/demowidgets --header "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" --cacert /var/run/secrets/kubernetes.io/serviceaccount/ca.crt'
+              jq: '.items[] | { name: .metadata.name, status: .spec.status, enabled: .spec.enabled, kind: .kind, apiVersion: .apiVersion}'
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nri-flex-crd-monitor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nri-flex-crd-monitor
+  template:
+    metadata:
+      labels:
+        app: nri-flex-crd-monitor
+    spec:
+      serviceAccountName: nri-flex-crd-monitor
+      containers:
+      - name: flex
+        image: newrelic/infrastructure-bundle:latest
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/newrelic-infra/integrations.d
+        env:
+        - name: NRIA_IS_FORWARD_ONLY
+          value: "true"
+        - name: NRIA_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-license-key
+              key: license
+      volumes:
+      - name: config-volume
+        configMap:
+          name: flex-configmap

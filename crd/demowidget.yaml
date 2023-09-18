@@ -1,0 +1,15 @@
+apiVersion: example.com/v1
+kind: DemoWidget
+metadata:
+  name: my-demowidget
+spec:
+  enabled: "true"
+  status: "UP"
+---
+apiVersion: example.com/v1
+kind: DemoWidget
+metadata:
+  name: my-demowidget-two
+spec:
+  enabled: "true"
+  status: "DOWN"
