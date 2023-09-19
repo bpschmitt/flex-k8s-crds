@@ -1,0 +1,12 @@
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: nri-flex-crd-monitor
+subjects:
+- kind: ServiceAccount
+  name: nri-flex-crd-monitor
+  namespace: flex-demo
+roleRef:
+  kind: ClusterRole
+  name: nri-flex-crd-monitor
+  apiGroup: rbac.authorization.k8s.io

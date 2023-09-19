@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nri-flex-crd-monitor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nri-flex-crd-monitor
+  template:
+    metadata:
+      labels:
+        app: nri-flex-crd-monitor
+    spec:
+      serviceAccountName: nri-flex-crd-monitor
+      containers:
+      - name: flex
+        image: newrelic/infrastructure-bundle:latest
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/newrelic-infra/integrations.d
+        env:
+        - name: NRIA_IS_FORWARD_ONLY
+          value: "true"
+        - name: NRIA_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-license-key
+              key: license
+      volumes:
+      - name: config-volume
+        configMap:
+          name: flex-configmap

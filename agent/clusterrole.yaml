@@ -1,0 +1,11 @@
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: nri-flex-crd-monitor
+rules:
+- apiGroups: ["example.com"]
+  resources: ["*"]
+  verbs: ["get", "list", "watch"]
+# - apiGroups: ["example.com","chaos-mesh.org"]
+#   resources: ["*"]
+#   verbs: ["get", "list", "watch"]
