@@ -1,6 +1,6 @@
-# Monitor Kubernetes CRDs with New Relic Flex
+# Monitor Kubernetes Custom Resources with New Relic Flex
 
-In this repo, you'll find an example of how to use [New Relic Flex](https://github.com/newrelic/nri-flex) to monitor Kubernetes CRDs.  While CRD monitoring is not currently built into the [nri-kubernetes](https://github.com/newrelic/nri-kubernetes) integration, you can still enable CRD monitoring using [nri-flex](https://github.com/newrelic/nri-flex) and a custom flex config.  
+In this repo, you'll find an example of how to use [New Relic Flex](https://github.com/newrelic/nri-flex) to monitor Kubernetes Custom Resources.  While Custom Resource monitoring is not currently built into the [nri-kubernetes](https://github.com/newrelic/nri-kubernetes) integration, you can still enable CRD monitoring using [nri-flex](https://github.com/newrelic/nri-flex) and a custom flex config.  
 
 How does it work?  Here's the TLDR:
 
