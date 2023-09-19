@@ -6,7 +6,7 @@ How does it work?  Here's the TLDR:
 
 - The deployment runs the `newrelic/infrastructure-bundle` container image which has `nri-flex` pre-packaged
 - The running Infra agent is configured in "forward only" mode.  With this option, the agent will run the `nri-flex` integration, but not report host-level metrics.
-- The Flex config is presented to the agent in a ConfigMap
+- The Flex config is presented to the agent in a [ConfigMap](https://github.com/bpschmitt/flex-k8s-crds/blob/main/agent/configmap.yaml)
 - Flex curls the Kubernetes API for the defined CRDs and parses the output with the built-in `jq` parser
 
 
