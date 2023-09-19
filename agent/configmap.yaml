@@ -10,16 +10,8 @@ data:
         # interval: 30s
         config:
           name: K8sCRDSample
-          # global:
-          #   base_url: https://kubernetes.default.svc.cluster.local
           apis:
-            # - name: stuff
-            #   commands:
-            #     - run: cat /var/run/secrets/kubernetes.io/serviceaccount/token | awk '{printf "{\"value\":\"%s\"}",$1}'
-            #   jq: '.'
-            #   store_variables:
-            #     value: token
-            #   ignore_output: true
+            # looking for a more efficient and dynamic way of doing this, but for now, it works.
             - name: demoWidgetCRD
               event_type: K8sCRDSample
               commands: 
